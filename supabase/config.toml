@@ -1,0 +1,6 @@
+[project]
+name = "prx-vault-technical"
+
+[functions]
+log-password-reset = {}
+

@@ -1,36 +1,179 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PRX Vault - Password Reset Technical Challenge
 
-## Getting Started
+A Next.js application implementing a password reset flow with Supabase Edge Functions integration.
 
-First, run the development server:
+## Features
+
+✅ Reset Password UI with comprehensive validation  
+✅ Supabase Edge Function (log-password-reset)  
+✅ Password strength indicator (Weak/Medium/Strong)  
+✅ Reusable form component  
+✅ Toast notifications for user feedback  
+✅ Unit tests for validation logic  
+✅ Local Supabase setup support  
+
+## Tech Stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS**
+- **React Hook Form** + **Zod** for form validation
+- **Supabase JS Client** for Edge Function calls
+- **Jest** for unit testing
+
+## Prerequisites
+
+- Node.js 18+ installed
+- Supabase CLI installed (`npm install -g supabase`)
+
+## Setup Instructions
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Set Up Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+### 3. Initialize Supabase Locally (Optional)
+
+If you want to test with local Supabase:
+
+```bash
+supabase init
+supabase start
+```
+
+Copy the anon key from the Supabase output and add it to your `.env.local` file.
+
+### 4. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 5. Serve Supabase Functions Locally (Optional)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In a separate terminal:
 
-## Learn More
+```bash
+npm run supabase:serve
+```
 
-To learn more about Next.js, take a look at the following resources:
+Or if you have Supabase CLI installed globally:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+supabase functions serve
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Testing
 
-## Deploy on Vercel
+Run unit tests:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm test
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run tests in watch mode:
+
+```bash
+npm run test:watch
+```
+
+## Routes
+
+- `/auth/reset-password` - Password reset form with validation
+- `/auth/login` - Login page (redirect target after successful reset)
+
+## Password Validation Rules
+
+- Minimum 8 characters
+- At least 1 uppercase letter
+- At least 1 number
+- At least 1 special character
+- Passwords must match
+
+## Supabase Edge Function
+
+The `log-password-reset` function is located at:
+```
+supabase/functions/log-password-reset/index.ts
+```
+
+**Expected Input:**
+```json
+{
+  "email": "user@example.com",
+  "resetTime": "2025-12-09T05:50:00.000Z"
+}
+```
+
+**Response:**
+```json
+{
+  "status": "logged"
+}
+```
+
+## Project Structure
+
+```
+prx-vault-technical/
+├── app/
+│   ├── auth/
+│   │   ├── reset-password/
+│   │   │   └── page.tsx
+│   │   └── login/
+│   │       └── page.tsx
+│   └── ...
+├── components/
+│   ├── ui/
+│   │   ├── Form.tsx
+│   │   └── Toast.tsx
+│   └── PasswordStrengthIndicator.tsx
+├── lib/
+│   ├── supabase.ts
+│   └── validations.ts
+├── supabase/
+│   └── functions/
+│       └── log-password-reset/
+│           └── index.ts
+├── __tests__/
+│   └── validations.test.ts
+└── ...
+```
+
+## Deployment
+
+### Deploy to Vercel
+
+1. Push your code to GitHub
+2. Import your project in [Vercel](https://vercel.com)
+3. Add environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy
+
+The application will be automatically deployed and you'll get a public preview link.
+
+## Bonus Features Implemented
+
+- ✅ Password strength indicator (Weak/Medium/Strong)
+- ✅ Unit tests for validation logic
+- ✅ Reusable form component
+- ✅ Toast/snackbar for success messages
+- ✅ Ready for Vercel deployment
+
+## License
+
+MIT
