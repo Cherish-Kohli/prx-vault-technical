@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase'
 import { Form } from '@/components/ui/Form'
 import { Toast } from '@/components/ui/Toast'
 import { PasswordStrengthIndicator } from '@/components/PasswordStrengthIndicator'
+import { PasswordRequirements } from '@/components/PasswordRequirements'
 
 export default function ResetPasswordPage() {
   const router = useRouter()
@@ -26,6 +27,7 @@ export default function ResetPasswordPage() {
   })
 
   const password = watch('password')
+  const confirmPassword = watch('confirmPassword')
 
   const onSubmit = async (data: PasswordResetFormData) => {
     setIsLoading(true)
@@ -108,6 +110,8 @@ export default function ResetPasswordPage() {
               )}
             </div>
           </div>
+          
+          <PasswordRequirements password={password || ''} confirmPassword={confirmPassword || ''} />
 
           <div>
             <button
