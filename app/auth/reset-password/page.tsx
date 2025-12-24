@@ -55,7 +55,7 @@ export default function ResetPasswordPage() {
       setShowToast(true)
       
       setTimeout(() => {
-        router.push('/auth/login')
+        router.push('/auth/login?reset=success')
       }, 2000)
     } catch (error) {
       console.error('Error resetting password:', error)
