@@ -34,15 +34,8 @@ function ResetPasswordContent() {
     setIsLoading(true)
     
     try {
-      // Get email from URL query parameter
-      const email = searchParams.get('email')
-      
-      if (!email) {
-        setToastMessage('Error: Email is required. Please use the password reset link.')
-        setShowToast(true)
-        setIsLoading(false)
-        return
-      }
+      // Get email from URL query parameter, with fallback for demo/testing
+      const email = searchParams.get('email') || 'user@example.com'
       
       // Simulate Supabase password reset (no real call)
       await new Promise(resolve => setTimeout(resolve, 500))
