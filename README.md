@@ -9,7 +9,8 @@ A Next.js application implementing a password reset flow with Supabase Edge Func
 - **Status**: ✅ Fully functional and tested in production
 
 ### Test the Application
-1. Visit: [https://prx-vault-technical-1tlk29lwp-cherishs-projects-933889ca.vercel.app/auth/reset-password](https://prx-vault-technical-1tlk29lwp-cherishs-projects-933889ca.vercel.app/auth/reset-password)
+1. Visit: [https://prx-vault-technical-1tlk29lwp-cherishs-projects-933889ca.vercel.app/auth/reset-password?email=user@example.com](https://prx-vault-technical-1tlk29lwp-cherishs-projects-933889ca.vercel.app/auth/reset-password?email=user@example.com)
+   - **Note**: The email parameter is required. In a real application, this would come from a password reset token/link.
 2. Fill out the form with a valid password (8+ chars, uppercase, number, special char)
 3. Submit to see the Edge Function in action
 4. You'll be redirected to the login page with a success message

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { passwordResetSchema, type PasswordResetFormData } from '@/lib/validations'
@@ -11,8 +11,9 @@ import { Toast } from '@/components/ui/Toast'
 import { PasswordStrengthIndicator } from '@/components/PasswordStrengthIndicator'
 import { PasswordRequirements } from '@/components/PasswordRequirements'
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
@@ -33,12 +34,21 @@ export default function ResetPasswordPage() {
     setIsLoading(true)
     
     try {
+      // Get email from URL query parameter
+      const email = searchParams.get('email')
+      
+      if (!email) {
+        setToastMessage('Error: Email is required. Please use the password reset link.')
+        setShowToast(true)
+        setIsLoading(false)
+        return
+      }
+      
       // Simulate Supabase password reset (no real call)
       await new Promise(resolve => setTimeout(resolve, 500))
       
       // Call Supabase Edge Function
       const resetTime = new Date().toISOString()
-      const email = 'user@example.com' // In real app, get from auth context
       
       const { error } = await supabase.functions.invoke('log-password-reset', {
         body: {
@@ -133,6 +143,23 @@ export default function ResetPasswordPage() {
         />
       )}
     </div>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="max-w-md w-full space-y-8">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Reset Password
+          </h2>
+          <p className="text-center text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <ResetPasswordContent />
+    </Suspense>
   )
 }
 
