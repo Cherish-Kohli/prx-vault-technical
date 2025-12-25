@@ -17,6 +17,7 @@ function ResetPasswordContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
+  const [toastType, setToastType] = useState<'success' | 'error'>('success')
   
   const {
     register,
@@ -31,12 +32,19 @@ function ResetPasswordContent() {
   const confirmPassword = watch('confirmPassword')
 
   const onSubmit = async (data: PasswordResetFormData) => {
-    setIsLoading(true)
+    // Check email first, before setting loading state
+    const email = searchParams.get('email')
     
+    if (!email) {
+      setToastMessage('Email is required. Please use the password reset link.')
+      setToastType('error')
+      setShowToast(true)
+      return // Exit early, don't proceed with reset
+    }
+
+    setIsLoading(true) // Only set loading after validation passes
+
     try {
-      // Get email from URL query parameter, with fallback for demo/testing
-      const email = searchParams.get('email') || 'user@example.com'
-      
       // Simulate Supabase password reset (no real call)
       await new Promise(resolve => setTimeout(resolve, 500))
       
@@ -55,6 +63,7 @@ function ResetPasswordContent() {
       }
 
       setToastMessage('Password reset successful! Redirecting to login...')
+      setToastType('success')
       setShowToast(true)
       
       setTimeout(() => {
@@ -63,6 +72,7 @@ function ResetPasswordContent() {
     } catch (error) {
       console.error('Error resetting password:', error)
       setToastMessage('An error occurred. Please try again.')
+      setToastType('error')
       setShowToast(true)
     } finally {
       setIsLoading(false)
@@ -131,7 +141,7 @@ function ResetPasswordContent() {
       {showToast && (
         <Toast
           message={toastMessage}
-          type="success"
+          type={toastType}
           onClose={() => setShowToast(false)}
         />
       )}
