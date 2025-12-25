@@ -172,7 +172,7 @@ prx-vault-technical/
 The application is successfully deployed to production:
 
 - **Vercel (Frontend)**: 
-  - Live URL: [https://prx-vault-technical-1tlk29lwp-cherishs-projects-933889ca.vercel.app](https://prx-vault-technical-1tlk29lwp-cherishs-projects-933889ca.vercel.app)
+  - Live URL: [https://prx-vault-technical.vercel.app/](https://prx-vault-technical-1tlk29lwp-cherishs-projects-933889ca.vercel.app)
   - Status: ✅ Deployed and working
   - Auto-deployment enabled from GitHub
 
